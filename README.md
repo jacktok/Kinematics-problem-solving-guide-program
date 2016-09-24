@@ -3,7 +3,7 @@
 this is project of cmu student. this project will calculate Kinematics problem of physics. providing problem is thai language. use python3 for development
 
 ## lib of python for dev
- * pyicu 
+ * [PyICU](https://pypi.python.org/pypi/PyICU)
 
 ## use dictionary
  * [NECTEC](http://www.nectec.or.th/)
