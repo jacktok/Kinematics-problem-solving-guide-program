@@ -1,6 +1,6 @@
 import PyICU
-class WordCut():
-    def __init__(self, sentences):
+class WordCut(object):
+    def set(self, sentences):
          self.sentences = sentences
     def isThai(self,chr):
         cVal = ord(chr)
