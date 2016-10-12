@@ -1,5 +1,8 @@
 import PyICU
 class WordCut(object):
+    def __init__(self):
+        super(WordCut, self).__init__()
+        print("i am  wordcut\n")
     def set(self, sentences):
          self.sentences = sentences
     def isThai(self,chr):
