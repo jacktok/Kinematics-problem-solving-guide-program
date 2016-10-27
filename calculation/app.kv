@@ -1,0 +1,37 @@
+<main>:
+    id:test
+    Label:
+        text:"Input Problem"
+        font_size:50
+        size_hint:1,.1
+        pos:0,root.top-root.top*.175
+    TextInput:
+        size_hint:.8,.5
+        pos: root.width/2-(root.width*0.8)/2, root.top/3.5
+        id: problem
+        font_size:20
+   
+     
+    Button:
+        pos: root.width/2-(root.width*0.2)/2+root.width*0.25, root.top*.1
+        size_hint:.2, .1
+        id: solving
+        text: "result"
+        on_release: root.getInput()
+    Button:
+        pos: root.width/2-(root.width*0.2)/2, root.top*.1
+        size_hint:.2, .1
+        id: solving
+        text: "Changed Equation"
+        on_release: root.getChangE()
+    Button:
+        pos: root.width/2-(root.width*0.2)/2-root.width*0.25, root.top*.1
+        size_hint:.2, .1
+        id: solving
+        text: "Find Equation"
+        on_release: root.getE()
+
+
+
+    
+
