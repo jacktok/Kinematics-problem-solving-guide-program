@@ -9,10 +9,13 @@
 
 import json
 import re
+import os
+print(os.getcwd())
+# print(re.search("/$",os.getcwd()))
 class Dic(object):
 	def __init__(self):
 		super(Dic, self).__init__()
-		f=open("newdic","r")
+		f=open(os.getcwd()+"/data/newdic","r")
 		a=f.read()
 		f.close()
 		self.dictionary=json.loads(a)
@@ -23,6 +26,7 @@ class Dic(object):
 		self.wordSearch=word
 		pattern='^'+word
 		self.wordlist=list()
+		count=0
 		for wordDic in self.dictionary:
 			# in the dictionary have space in the words
 			try:
@@ -31,7 +35,10 @@ class Dic(object):
 				pass
 			else:
 				if re.match(pattern,wordDic['tsearch']) :
+					count+=1
 					self.wordlist.append(wordDic.copy())
+					if count==20:
+						break
 		return len(self.wordlist)
 	def searchDictionary(self):
 		words=list()
@@ -47,7 +54,7 @@ class Dic(object):
 			words=list()
 			for word in self.wordlist:
 				words.append(word['tsearch'])
-			return words
+			return sorted(words,key=len)
 
 	def dicData(self):
 		return self.dictionary

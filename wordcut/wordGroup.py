@@ -1,14 +1,14 @@
-from wordMap import WordMap
+from wordcut.wordMap import WordMap
 import pprint
 import json
-
+import os
 
 pp = pprint.PrettyPrinter(indent=4)
 class WordGroup(WordMap):
 	"""docstring for WordGroup"""
 	def __init__(self):
 		super(WordGroup, self).__init__()
-		self.fileLocaltion="../data/grammar"
+		self.fileLocaltion=os.getcwd()+"/data/grammar"
 		self.loadGrammar()
 	def loadGrammar(self):
 		data=open(self.fileLocaltion,"r")
@@ -21,6 +21,7 @@ class WordGroup(WordMap):
 		grammar=open(self.fileLocaltion,"w")
 		grammar.write(data)
 		grammar.close()
+		print("complit")
 		
 	def dumpGrammar(self,*arg):
 		# paramiter grammarof typedata
@@ -89,23 +90,36 @@ class WordGroup(WordMap):
 			newSubGrammar['important']=input("important(t) : ")=="t"
 			x=input("more type(y)")
 			newGrammar.append(newSubGrammar)
+		try:
+			grammar[typeGrammar]
+		except NameError:
+			self.grammar[typeGrammar]=list()
+		self.grammar[typeGrammar].append(newGrammar)
+
 		# pp.pprint(newGrammar)
-		if self.checkGrammar(newGrammar,typeGrammar):
-			print("Complite ::")
-		else :
-			print("Error : grammar is already")
+		# if self.checkGrammar(newGrammar,typeGrammar):
+		# 	print("Complite ::")
+		# else :
+		# 	print("Error : grammar is already")
 	def group(self):
 		words=self.map()
 		grammar=self.grammar.copy()
 		# pp.pprint(words)
 		for title in grammar: 
 			# titile of grammar
-			for rule in grammar[title]:
-				words=self.patternWord(words,rule.copy(),title)
-			# break
-			# break
+			if title!="group":
+				for rule in grammar[title]:
+					words=self.patternWord(words,rule.copy(),title)
+		for rule in grammar["group"]:
+			print(rule)
+			words=self.patternWord(words,rule.copy(),self.grammarFirstTrue(rule)['type'])
+
 		pp.pprint(words)
 		return words
+	def grammarFirstTrue(self,rule):
+		for i in rule:
+			if i['important']:
+				return i
 
 	def patternWord(self,words,rule,title):
 		# find word is coincide rule
@@ -122,6 +136,7 @@ class WordGroup(WordMap):
 			word=posWord.pop(0)
 			bufferRule=list()
 			if word['type']==title:
+				print("hi")
 				isTitle=True
 				tryGroup=list()
 				tryGroup.append(word)				
@@ -171,9 +186,9 @@ class WordGroup(WordMap):
 									# isTitle=False
 									break
 					if coincide:
-						print("tRUEEEEEEEE",wordIndex)
+						# print("tRUEEEEEEEE",wordIndex)
 						group=dict()
-						group['type']='group'
+						group['type']='g'+title
 						group['rule']=rule
 						group['title']=title
 						group['words']=tryGroup

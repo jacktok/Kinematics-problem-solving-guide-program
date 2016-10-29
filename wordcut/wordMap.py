@@ -1,6 +1,6 @@
-from wordFilter import Filter 
-from wordCut import WordCut
-from SearchWord import Dic
+from wordcut.wordFilter import Filter 
+from wordcut.wordCut import WordCut
+from wordcut.SearchWord import Dic
 from operator import itemgetter
 class WordMap(WordCut,Filter,Dic):
 	"""docstring for WordMap"""

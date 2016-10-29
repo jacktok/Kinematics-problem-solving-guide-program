@@ -1,5 +1,5 @@
-from SearchWord import Dic
-from wordCut import WordCut
+# from SearchWord import Dic
+# from wordCut import WordCut
 
 class AnalyzeText(Dic,WordCut):
 	"""docstring for AnalyzeText"""

@@ -1,10 +1,11 @@
 from operator import itemgetter
 import json
 import re
+import os
 class Filter(object):
 	def __init__(self):
 		super(Filter, self).__init__()
-		self.fileLocaltion="../data/wordspecial"
+		self.fileLocaltion=os.getcwd()+"/data/wordspecial"
 		self.load()
 		print("loaded word special\n")
 	def load(self):
