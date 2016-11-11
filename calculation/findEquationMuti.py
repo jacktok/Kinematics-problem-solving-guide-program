@@ -1,3 +1,4 @@
+import os
 def find(equation,value,valueFind,valueMainFind,checkLoopInfinit,result):
 	#print( "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ",result)
 	#print(type(valueFind),valueMainFind,value)
@@ -65,7 +66,7 @@ def deleteResultError(result,checkLoopInfinit):
 		if(len(result)==1 and result[0]<=checkLoopInfinit):
 			result=[]
 def IOEquation():
-	f=open('equation.cwt')
+	f=open(os.getcwd()+"/data/formula/variable")
 	return f.read().split()
 
 def setEquationState(equationState):

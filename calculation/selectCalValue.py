@@ -1,4 +1,4 @@
-import calValue as cal
+import calculation.calValue as cal
 def poly(equation,value,cost):
 	
 	b=cal.calValue(['u'],value[:],cost[:]);

@@ -5,11 +5,11 @@ import os
 class Filter(object):
 	def __init__(self):
 		super(Filter, self).__init__()
-		self.fileLocaltion=os.getcwd()+"/data/wordspecial"
 		self.load()
 		print("loaded word special\n")
 	def load(self):
-		wordspec=open(self.fileLocaltion,"r")
+		fileLocaltion=os.getcwd()+"/data/wordspecial"
+		wordspec=open(fileLocaltion,"r")
 		dic=wordspec.read()
 		wordspec.close()
 		dic=json.loads(dic)
@@ -56,13 +56,19 @@ class Filter(object):
 			if word['word']==wordSearch:
 				return word
 		return False
-	def searchTypeSpec(self,typeSearch):
+	def searchTypeSpec(self,typeSearch,*arg):
 		words=list()
+		wordType="word"
+		if len(arg)==1 :
+			wordType=arg[0]
+
+			
 		for word in self.dic:
 			if word['type']==typeSearch:
 		
-				words.append(word['word'])
-		if words :
+				words.append(word[wordType])
+		# print(words)
+		if not(words) :
 			return False
 		return words
 	def edit(self,word):

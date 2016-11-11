@@ -8,10 +8,10 @@ class WordGroup(WordMap):
 	"""docstring for WordGroup"""
 	def __init__(self):
 		super(WordGroup, self).__init__()
-		self.fileLocaltion=os.getcwd()+"/data/grammar"
 		self.loadGrammar()
 	def loadGrammar(self):
-		data=open(self.fileLocaltion,"r")
+		fileLocaltion=os.getcwd()+"/data/grammar"
+		data=open(fileLocaltion,"r")
 		txtData=data.read()
 		data.close()
 		grammar=json.loads(txtData)
@@ -70,7 +70,6 @@ class WordGroup(WordMap):
 		# paramiter grammar(list:dict)
 		# check if grammar is already return False
 		grammarType=self.dumpGrammarFM(grammar.copy(),"type")
-		print("aaaaaaaaa   " )
 		pp.pprint(grammarType)
 		pp.pprint(self.dumpGrammar('direction','type'))
 		for dicTypeGrammar in self.dumpGrammar(typeGrammar,"type"):
@@ -95,12 +94,6 @@ class WordGroup(WordMap):
 		except NameError:
 			self.grammar[typeGrammar]=list()
 		self.grammar[typeGrammar].append(newGrammar)
-
-		# pp.pprint(newGrammar)
-		# if self.checkGrammar(newGrammar,typeGrammar):
-		# 	print("Complite ::")
-		# else :
-		# 	print("Error : grammar is already")
 	def group(self):
 		words=self.map()
 		grammar=self.grammar.copy()
@@ -109,10 +102,19 @@ class WordGroup(WordMap):
 			# titile of grammar
 			if title!="group":
 				for rule in grammar[title]:
-					words=self.patternWord(words,rule.copy(),title)
-		for rule in grammar["group"]:
-			print(rule)
-			words=self.patternWord(words,rule.copy(),self.grammarFirstTrue(rule)['type'])
+					print(rule)
+					data=self.patternWord(words,rule.copy(),title)
+					words=data['group']
+
+		countGroup=1
+		while countGroup!=0:
+			print("wile")
+			countGroup=0
+			for rule in grammar["group"]:
+				print(rule)
+				data=self.patternWord(words,rule.copy(),self.grammarFirstTrue(rule)['type'])
+				words=data['group']
+				countGroup+=data['count']
 
 		pp.pprint(words)
 		return words
@@ -124,10 +126,11 @@ class WordGroup(WordMap):
 	def patternWord(self,words,rule,title):
 		# find word is coincide rule
 		# print(words)
+		countGroup=0
 		titleIndex=list()
 		preWord=list()
 		posWord=words.copy()
-		ruleIndex=self.indexTitleofRule(rule.copy(),title)
+		ruleIndex=self.indexTitleofRule(rule.copy(),self.grammarFirstTrue(rule.copy())['type'])
 		# pp.pprint(rule)
 		# pp.pprint(ruleIndex)
 		while posWord:
@@ -135,72 +138,76 @@ class WordGroup(WordMap):
 			coincide=True
 			word=posWord.pop(0)
 			bufferRule=list()
-			if word['type']==title:
-				print("hi")
+			if word['type']==self.grammarFirstTrue(rule.copy())['type']:
 				isTitle=True
 				tryGroup=list()
-				tryGroup.append(word)				
+				tryGroup.append(word)
+
 				if ruleIndex>=0:
 					nextStatus=True
 					for index in range(1,ruleIndex+1):
-	
-						# type between rule[0] and befor rule[index]
-						bufferWord=self.popWord(preWord,-1)
-						if bufferWord['type']==rule[ruleIndex-index]['type']:
-							if rule[ruleIndex-index]['important']:
-								bufferRule=list()
-							if not(rule[ruleIndex-index]['important']):
-								bufferRule+=[rule[ruleIndex-index]['type']]
-							tryGroup.insert(0,bufferWord)
-						else:
-							if bufferWord['type']!=self.popWord(bufferRule,0) or rule[ruleIndex-index]['important']:
-								coincide=False
-								break
+						if nextStatus: bufferWord=self.popWord(preWord,-1)
+						if bufferWord!=False:
+							if bufferWord['type']==rule[ruleIndex-index]['type']:
+								if rule[ruleIndex-index]['important']:
+									bufferRule=list()
+								if not(rule[ruleIndex-index]['important']):
+									bufferRule+=[rule[ruleIndex-index]['type']]
+								tryGroup.insert(0,bufferWord)
+								nextStatus=True
+							else:
+								if not(rule[ruleIndex-index]['important']):
+									nextStatus=False
+									pass
+								
+								elif bufferWord['type']!=self.popWord(bufferRule,0) :
+										tryGroup.insert(0,bufferWord)
+										coincide=False
+										break
+					if nextStatus==False:
+						preWord.append(bufferWord)
+
+					nextStatus=True
+						
 					wordIndex=len(tryGroup)	
 					bufferRule=list()
 					
 					for index in range(1,len(rule)-ruleIndex):
 						# type between after rule[index] and rule[last]
 						if nextStatus: bufferWord=self.popWord(posWord,0)
-						print(":::",bufferWord['type'],rule[ruleIndex+index]['type'],rule[ruleIndex+index]['important'])
-
-						if bufferWord['type']==rule[ruleIndex+index]['type']:
-							if rule[ruleIndex+index]['important']:
-								bufferRule=list()
-							if not(rule[ruleIndex+index]['important']):
-								bufferRule+=[rule[ruleIndex+index]['type']]
-							tryGroup.append(bufferWord)
-							nextStatus=True
+						if bufferWord!=False:
+							if bufferWord['type']==rule[ruleIndex+index]['type']:
+								if rule[ruleIndex+index]['important']:
+									bufferRule=list()
+								if not(rule[ruleIndex+index]['important']):
+									bufferRule+=[rule[ruleIndex+index]['type']]
+								tryGroup.append(bufferWord)
+								nextStatus=True
+							else:
+								if not(rule[ruleIndex+index]['important']):
+									nextStatus=False
+									pass
+								elif bufferWord['type']!=self.popWord(bufferRule,0) :
+										tryGroup.append(bufferWord)
+										coincide=False
+										break
 						else:
-							print("else",not(rule[ruleIndex+index]['important']))
-							if not(rule[ruleIndex+index]['important']):
-								print("not im")
-								nextStatus=False
-								pass
-							
-							elif bufferWord['type']!=self.popWord(bufferRule,0) :
-									print("break")
-									# print(bufferWord)
-									tryGroup.append(bufferWord)
-									coincide=False
-									# isTitle=False
-									break
+							coincide=False
 					if coincide:
-						# print("tRUEEEEEEEE",wordIndex)
 						group=dict()
-						group['type']='g'+title
+						group['type']='g'+title if title[0]!='g' else title
 						group['rule']=rule
 						group['title']=title
 						group['words']=tryGroup
 						preWord.append(group)
+						countGroup+=1
 					else:
 						preWord+=tryGroup[:wordIndex]
 						posWord=tryGroup[wordIndex:]+posWord
 			if not(isTitle):
 				preWord.append(word)
-			# pp.pprint(preWord)
-	
-		return preWord	
+		
+		return {"group":preWord,"count":countGroup}
 
 		
 	def popWord(self,word,index):

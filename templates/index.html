@@ -1,103 +1,42 @@
-{% extends "layout.html" %} {% block content %}
-<style type="text/css">
-form {
-    padding: 10px;
-    display: flex;
-    height: auto;
-}
-
-#input {
-    width: 80%;
-    float: left;
-}
-
-#access {
-    width: 15%;
-    float: right;
-    margin-left: 30px;
-}
-
-.row {
-    margin-bottom: 5px;
-}
-
-#title {
-    margin-top: 10px;
-    padding-left: 5%;
-}
-
-.preword {
-    width: 50%;
-    display: block;
-    margin-left: 10px;
-}
-</style>
+{% extends "layout.html" %} {% block content %} {% raw %}
 <div id="title" class="row">
     <p>แก้ปัญหาโจทย์การเคลื่อนที่ของฟิสิกส์</p>
 </div>
 <form>
+    <button type="submit" class="btn" id="test1">test1</button>
+    <button type="submit" class="btn" id="test2">test2</button>
+    <button type="submit" class="btn" id="test3">test3</button>
     <div id="input">
         <textarea class="form-control" rows="6"></textarea>
     </div>
     <div id="access">
         <div class="row">
-            <button type="submit" class="btn btn-primary">Recommend</button>
+            <button type="submit" class="btn btn-primary" ng-click="getRecommend();" >Recommend</button>
         </div>
         <div class="row">
             <button type="submit" id="answers" class="btn btn-primary">Show answers</button>
         </div>
     </div>
 </form>
-<div class="preword">sss</div>
-<script type="text/javascript">
-$(function() {
+<div class="row">
+    <div class="col-md-4">Check :
+        <input type="text" name="check" id="check" ng-keyup="recomm($event)">
+    </div>
+    <div class="preword col-md-8">
+        <ul class="recomm">
+            <li ng-repeat="word in wordrecommand track by $index" class="word">{{ word }}</li>
+        </ul>
+    </div>
+</div>
+<div class="row recommend sample-show-hide" ng-show="recommendShow">
+    <h2>Recommend</h2>
+    <hr>
+    <p>จากโจทย์ให้ตัวแปล</p> <b ng-repeat="variable in recommend">{{ variable }}</b>
+</div>
+<div class="row recommend sample-show-hide" ng-show="answersShow">
+    <h2>Recommend</h2>
+    <hr>
+    <p>จากโจทย์ให้ตัวแปล</p>
+</div>
 
-    $('body').keyup(function(evt) {
-        bufferWord = ""
-        word = $("textarea").val()
-        findWord(word)
-        // console.log($( "textarea" ).focus());
-    });
-    $("textarea").keydown(function(e) {
-        // Enter was pressed without shift key
-        if (e.keyCode == 13 && !e.shiftKey) {
-            // prevent default behavior
-            e.preventDefault();
-        }
-    });
-    $("button#answers").click(function (){
-        $.ajax({
-            type: "GET",
-            url: $SCRIPT_ROOT + "/test/",
-            contentType: "application/json; charset=utf-8",
-            data: {
-                problem: $("textarea").val()
-            },
-            success: function(data) {
-              preword=data.value
-              console.log(data.value)
-              $('.preword').text(data.value)
-            }
-        });
-    });
-    function findWord(newword) {
-
-        $.ajax({
-            type: "GET",
-            url: $SCRIPT_ROOT + "/preword/",
-            contentType: "application/json; charset=utf-8",
-            data: {
-                word: newword
-            },
-            success: function(data) {
-              preword=data.value
-              console.log(data.value)
-              $('.preword').text(data.value)
-            }
-        });
-        return preword
-
-    }
-});
-</script>
-{% endblock %}
+{% endraw %} {% endblock %}

@@ -1,0 +1,53 @@
+form {
+    padding: 10px;
+    display: flex;
+    height: auto;
+}
+
+#input {
+    width: 80%;
+    float: left;
+}
+
+#access {
+    width: 15%;
+    float: right;
+    margin-left: 30px;
+}
+
+.row {
+    margin-left: 10px;
+    margin-right:  10px;
+
+    margin-bottom: 5px;
+}
+
+#title {
+    margin-top: 10px;
+    padding-left: 5%;
+}
+
+.preword {
+    width: 50%;
+    display: block;
+    margin-left: 10px;
+}
+li.word{
+    list-style-type: none;
+}
+li.word.active{
+    background: #d4d4d4;
+}
+.recommend{
+    border: 0px solid;
+    border-left: 10px solid;
+    padding-left: 20px;
+    width: 90%;
+}
+
+.sample-show-hide {
+  transition: all linear 0.5s;
+}
+.sample-show-hide.ng-hide {
+  opacity: 0;
+}

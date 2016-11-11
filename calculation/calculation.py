@@ -1,3 +1,4 @@
+import os
 def printE(left,right):
 	for i in left:
 		print(i,end="")
@@ -187,7 +188,7 @@ def changeEquation(equation,valueFind):
 	return equation
 
 def IOEquation():
-	f=open('equation')
+	f=open(os.getcwd()+"/data/formula/equation")
 	f=f.read().split('\n')
 	for i in range(len(f)):
 		f[i]=f[i].split()

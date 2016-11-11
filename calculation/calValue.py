@@ -31,19 +31,23 @@ def calValue(equation,value,cost):
 			return float(calE[0][0])
 		return cost[value.index(calE[0][0])]
 	if(len(calE)==2):
-		#print("calE2")
+		# print("calE2")
+
 		if calE[0][0]=='-':
 			return (-1*(calValue(calE[1][:],value[:],cost[:])))
 		if calE[0][0]=='sin^-1':
-			return math.degrees(math.asin(calValue(calE[1][:],value[:],cost[:])))
+			return math.asin(math.radians(calValue(calE[1][:],value[:],cost[:])))
 		if calE[0][0]=='cos^-1':
-			return math.degrees(math.acos(calValue(calE[1][:],value[:],cost[:])))
+			return math.acos(math.radians(calValue(calE[1][:],value[:],cost[:])))
 		if calE[0][0]=='cos':
-			return math.cos(calValue(calE[1][:],value[:],cost[:]))
+			return math.cos(math.radians(calValue(calE[1][:],value[:],cost[:])))
 		if calE[0][0]=='sin':
-			return math.sin(calValue(calE[1][:],value[:],cost[:]))
+			print(calValue(calE[1][:],value[:],cost[:]))
+
+			return math.sin(math.radians(calValue(calE[1][:],value[:],cost[:])))
+
 		if calE[0][0]=='tan':
-			return math.tan(calValue(calE[1][:],value[:],cost[:]))
+			return math.tan(math.radians(calValue(calE[1][:],value[:],cost[:])))
 	if(len(calE)==3):
 		if calE[1][0]=='+':
 			return calValue(calE[0][:],value[:],cost[:])+calValue(calE[2][:],value[:],cost[:])

@@ -4,9 +4,10 @@ import json
 # from wordcut.wordFilter import Filter 
 # from wordcut.wordCut import WordCut
 # from wordcut.wordMap import WordMap
-from wordcut.wordGroup import WordGroup
+# from wordcut.wordGroup import WordGroup
+from controll import Controll
 
-controll=WordGroup()
+controll=Controll()
 app = Flask(__name__)
 def test(word):
  	return "8"
@@ -31,11 +32,19 @@ def test():
     data =  request.args.get('problem')
     print(data)
     controll.includeProblem(data)
-    answers = controll.group()
-    answers=json.dumps(answers, ensure_ascii=False)
+    answers = controll.calulate()
+    # answers=json.dumps(answers, ensure_ascii=False)
     data = {"value": 'answers'}
     
     return jsonify(data)
+@app.route('/recommend/',methods=['GET'])
+def recommend():
+    data =  request.args.get('problem')
+    print(data)
+    controll.includeProblem(data)
+    answers = controll.returnVariable()
+    # answers=json.dumps(answers, ensure_ascii=False)
+    data = {"value": answers}
 
 if __name__ == '__main__':
-    app.run(port=8080, debug=True)
+    app.run(port=8000, debug=True)
