@@ -34,8 +34,17 @@ class controllCalculation():
                 data=open(fileLocaltion,"w")
                 data.write(equation)
                 data.close()
-
-        def calculate(self):
+        def getFormula(self):
+                value=self.value
+                valueFind=self.find
+                listE=findE.getIndex(value,valueFind)
+                formula=list()
+                if listE==[]:
+                        return []
+                for equation in listE:
+                        formula.append(changE.getEquationOrigin(equation))
+                return formula
+        def calculate(self,option):
                 # value=list:str 
                 # cost= list:float
                 # valueFind = str
@@ -52,6 +61,10 @@ class controllCalculation():
                 listE=findE.getIndex(value,valueFind)
                 print(listE)
                 miss=[]
+                missing=list()
+                formulaUse=list()
+                formathFormula=list()
+                cos=list()
                 if len(listE)==0:return []
                 for i in range(len(listE)):
                                 
@@ -63,13 +76,20 @@ class controllCalculation():
                         value+=miss
                         selec+="\n้have "+miss[0]+" = "+str(cost[-1])+"\n\n"
                         select+=[selec]
+                        missing+=miss
+                        formulaUse+=[changE.getEquationOrigin(listE[i])]
+                        formathFormula+=[Echange]
+                        cos+=[cost[-1]]
+
                         
                 textshow=show+"\n\n" + '\n'.join(select)
                 print(textshow)  
-
-                return cost
+                if option=='result':
+                        return cost
+                return [missing,formulaUse,formathFormula,cos]
 
 a=controllCalculation()
 a.update()
 a.test()
-print(a.calculate())
+
+print(a.calculate('solving'))

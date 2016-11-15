@@ -11,16 +11,16 @@
     </div>
     <div id="access">
         <div class="row">
-            <button type="submit" class="btn btn-primary" ng-click="getRecommend();" >Recommend</button>
+            <button type="submit" class="btn btn-primary" ng-click="getRecommend();">Recommend</button>
         </div>
         <div class="row">
-            <button type="submit" id="answers" class="btn btn-primary">Show answers</button>
+            <button type="submit" id="answers" class="btn btn-primary" ng-click="getSolving()">Solving</button>
         </div>
     </div>
 </form>
 <div class="row">
     <div class="col-md-4">Check :
-        <input type="text" name="check" id="check" ng-keyup="recomm($event)">
+        <input type="text" name="check" id="check" ng-model="check" ng-keyup="recomm($event)">
     </div>
     <div class="preword col-md-8">
         <ul class="recomm">
@@ -31,12 +31,145 @@
 <div class="row recommend sample-show-hide" ng-show="recommendShow">
     <h2>Recommend</h2>
     <hr>
-    <p>จากโจทย์ให้ตัวแปล</p> <b ng-repeat="variable in recommend">{{ variable }}</b>
+    <div>
+        <div class="row">
+            <p> จากโจทย์ให้ตัวแปร
+                <b style="padding: 5px;" ng-repeat="variable in recommend">{{ variable }}</b>
+            </p>
+        </div>
+        <div class="row">
+            <p>โจทย์ต้องการให้หาค่าของ <b>{{ variableFind }}</b> </p>
+        </div>
+        <div class="row" ng-show='!recommendFail'>
+            <p> ใช้สมการ </p>
+            <p style="padding-left: 5%;" ng-repeat="equation in formula track by $index">
+                <b ng-repeat="char in equation  track by $index" ">{{ char }} </b></p>
+        </div>
+        <div class="row " ng-show='recommendFail'>
+            <p style="color:red; "> ไม่สามารถแก้ปัญหาได้ </p>
+        </div>
+    </div>    
 </div>
-<div class="row recommend sample-show-hide" ng-show="answersShow">
-    <h2>Recommend</h2>
+<div class="row recommend sample-show-hide " ng-show="answersShow ">
+    <h2>Solving</h2>
     <hr>
-    <p>จากโจทย์ให้ตัวแปล</p>
+    <div>
+        <b>จากโจทย์ได้ตัวแปร</b>
+        <div class="row " ng-repeat="variable in variableSolving[0] ">
+            <div class="col-md-1 "></div>
+            <div class="col-md-1 ">{{ variable }}</div>
+            <div class="col-md-1 ">=</div>
+            <div class="col-md-7 ">{{ variableSolving[1][$index] }}</div>
+        </div>
+    </div>
+    <div>
+         โจทย์ต้องการให้หาค่าของ <b>{{ variableFindSolving }}</b>
+    </div>
+    <div class="row " ng-show='recommendFail'>
+        <p style="color:red; "> ไม่สามารถแก้ปัญหาได้ </p>
+    </div>
+    <div ng-repeat ="steps in stepSolving track by $index " ng-show='!recommendFail'>
+        <div style="padding-left: :5% " class="subStep ">
+         <b>จากแกน {{ steps[4]}} </b>
+            <div class="step " style="padding-left: 5%; ">
+                <div ng-repeat="step in steps[0] track by $index ">
+                    <p>
+                        ค้นหาค่าของ {{ step }}
+                    </p><div style="padding-left: 5% ">
+                    <div class="row ">
+                        <div class="col-md-4 ">
+                            <p>จากสมการ </p>
+                        </div>
+                        <div class="col-md-8 ">
+                             <b ng-repeat="equation in steps[1][$index] track by $index "> {{ equation }}</b>
+                        </div>
+                    </div>
+                     <div class="row ">
+                        <div class="col-md-4 ">
+                            <p> แปลงสมการให้อยู่ในรูป</p>
+                        </div>
+                        <div class="col-md-8 ">
+                            <b ng-repeat="equation in steps[2][$index] track by $index "> {{ equation }}</b> 
+                        </div>
+                    </div>        
+                    <p>
+                      จะได้ค่าของ <b>{{ step }}</b> เท่ากับ {{ steps[3][$index] }}
+                    </p>
+                        
+                    </div>
+                    
+                    
+                </div>
+            </div>
+         </div>
+        
+    </div>
+    <div style="padding-left: 5px " ng-show="isMoreStep">
+        <p><b>ดังนั้น จากค่า</b></p>
+         <div class="row " ng-repeat="lastStep in lastStepSolving[0] ">
+            <div class="col-md-1 "></div>
+            <div class="col-md-1 ">{{ lastStep }}</div>
+            <div class="col-md-1 ">=</div>
+            <div class="col-md-7 ">{{ lastStepSolving[1][$index] }}</div>
+        </div>
+        <p><b>ใช้สมการ</b></p>       
+            <p style="padding-left:  5%;" >
+            <b ng-repeat="char in lastStepSolving[2]  track by $index" ">{{ char }} </b></p>
+        <p>จะได้ค่า <b>{{ lastStepSolving[4] }}</b> เท่ากับ <b>{{ lastStepSolving[3][0] }}</b></p>
+
+    </div>
+    </div>
+    <div class="row " style="padding-top: 15px; ">
+    <div class="col-md-5 "></div>
+     <div ng-show="!success " class="col-md-1 " >
+    <div class="preloader-wrapper big active ">
+      <div class="spinner-layer spinner-blue ">
+        <div class="circle-clipper left ">
+          <div class="circle "></div>
+        </div><div class="gap-patch ">
+          <div class="circle "></div>
+        </div><div class="circle-clipper right ">
+          <div class="circle "></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-red ">
+        <div class="circle-clipper left ">
+          <div class="circle "></div>
+        </div><div class="gap-patch ">
+          <div class="circle "></div>
+        </div><div class="circle-clipper right ">
+          <div class="circle "></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-yellow ">
+        <div class="circle-clipper left ">
+          <div class="circle "></div>
+        </div><div class="gap-patch ">
+          <div class="circle "></div>
+        </div><div class="circle-clipper right ">
+          <div class="circle "></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-green ">
+        <div class="circle-clipper left ">
+          <div class="circle "></div>
+        </div><div class="gap-patch ">
+          <div class="circle "></div>
+        </div><div class="circle-clipper right ">
+          <div class="circle "></div>
+        </div>
+      </div>
+    </div>
+    </div>
 </div>
+<div class="error" ng-show="Error"><br><br>
+<p class="text-center">ERROR : please check problem input</p>
+<br><br>
+</div>
+  
+
 
 {% endraw %} {% endblock %}

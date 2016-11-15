@@ -8,6 +8,7 @@ def find(equation,value,valueFind,valueMainFind,checkLoopInfinit,result):
 
 	#print("หา ",valueFind ," check : ",checkLoopInfinit)
 	#print(equation)
+
 	equationState=setEquationState(equation[:])
 	for i in range(len(equation)):
 		if(valueFind in equation[i]):
@@ -81,6 +82,7 @@ def p(equation,equationState):
 def splitValueIO(equation):
 	for i in range(len(equation)):
 		equation[i]=equation[i].split('/')
+	equation=[ list(set(eq)) for eq in equation.copy() ]
 	return equation
 
 

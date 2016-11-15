@@ -34,17 +34,20 @@ def test():
     controll.includeProblem(data)
     answers = controll.calulate()
     # answers=json.dumps(answers, ensure_ascii=False)
-    data = {"value": 'answers'}
+    data = {"value": answers[0],"equation":answers[1],"find":answers[2],"step":answers[3],"lastStep":answers[4]}
     
     return jsonify(data)
 @app.route('/recommend/',methods=['GET'])
 def recommend():
     data =  request.args.get('problem')
     print(data)
+    print("::::::::")
     controll.includeProblem(data)
     answers = controll.returnVariable()
+    print(answers)
+    print("hi")
     # answers=json.dumps(answers, ensure_ascii=False)
-    data = {"value": answers}
-
+    data = {"value": answers[0],"equation":answers[1],"find":answers[2]}
+    return jsonify(data)
 if __name__ == '__main__':
     app.run(port=8000, debug=True)
