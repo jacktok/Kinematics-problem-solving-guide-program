@@ -1,12 +1,11 @@
 # Kinematics-problem-solving-guide-program
 
-the project for calculating physic problem atThai language. 
- **divide to 2 part for find result from problem**
- - find variable from the problem(Thai language)
-    - cut Thai word by dictionary from NECTED. Find the longest word.
-    - group the word to get what problem meaning
-    - get variable and direction then convert to positive and negative.
- - get the result from calculating variable
+the project for calculating simple problem of physic Kinematics as Thai language. 
+
+**[input]** => physic Kinematics problem e.g. `วัตถุกำลังเคลื่อนที่ด้วยความเร็ว 40 m/s ไปทางทิศ...`
+
+**[output]** => step for solve problem and answer as `decimal`
+
 
 ## Install
  need Python 3.5 Pip3
